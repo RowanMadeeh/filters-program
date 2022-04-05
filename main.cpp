@@ -35,7 +35,43 @@ void saveImage () {
    writeGSBMP(imageFileName, image);
 }
 
+void swap(int& a,int& b){
+    int t = a;
+    a = b;
+    b = t;
+}
 
+void invertimage() {
+  for (int i = 0; i < SIZE; i++) {
+    for (int j = 0; j< SIZE; j++) {
+            if(image[i][j]==0){
+                image[i][j]=255;
+            }else if(image[i][j]==255){
+                image[i][j]=0;
+            }else{
+                image[i][j]=255-image[i][j];
+            }
+
+    }
+  }
+}
+
+void rotateimage(){
+     for (int i = 0; i <=SIZE; i++) {
+            for (int j = i+1; j <= SIZE; j++) {
+
+                swap(image[i][j],image[j][i]);
+
+            }
+        }
+        for (int i = 0; i <=SIZE; i++) {
+            for (int j = 0; j <= SIZE/2; j++) {
+
+                swap(image[i][j],image[i][SIZE-1-j]);
+
+            }
+        }
+}
 
 
 
@@ -46,6 +82,7 @@ int main()
   cout<<"Hello user!"<<endl;
 
   string choice;
+  int n;
 
   while(true){
 
@@ -76,7 +113,8 @@ int main()
     }
 
     else if(choice == "2"){
-
+        loadImage();
+        invertimage();
     }
 
     else if(choice == "3"){
@@ -93,7 +131,22 @@ int main()
     }
 
     else if(choice == "6"){
+        loadImage();
+        cout<<"please choose:"<<'\n'<<" 1- rotate 90 degrees"<<'\n'<<" 2- rotate 180 degrees"<<'\n'<<" 3- rotate 270 degrees"<<'\n';
+        cin>>n;
+        if(n==1){
+            rotateimage();
+        }else if(n==2){
+            rotateimage();
+            rotateimage();
 
+
+        }else if(n==3){
+           rotateimage();
+           rotateimage();
+           rotateimage();
+
+        }
     }
 
     else if(choice == "0"){
