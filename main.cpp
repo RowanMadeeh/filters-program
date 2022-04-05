@@ -72,8 +72,34 @@ void rotateimage(){
             }
         }
 }
+void filter_1()
+{
+int sum=0,avg;
+for(int i=0;i<size;i++){
+    for(int j=0;j<size;j++){
+        sum++image[i][j];
+    }
+}
+avg=sum/(size*size);
+for(int i=0;i<size;i++){
+    for(int j=0;j<size;j++){
+        if(image[i][j]>avg)
+            image[i][j]=255;
+        else
+            {
+            image[i][j]=0;
+            }
+    }
+}
+}
 
-
+void filter_4(){
+    for(int i=0;i<=255;i++){
+        for(int j=0;j<=127;j++){
+            swap(image[i][j],image[255-i][255-j]);
+        }
+    }
+}
 
 
 int main()
@@ -109,7 +135,8 @@ int main()
 
     if(choice == "1"){
 
-
+        loadImage();
+        filter_1();
     }
 
     else if(choice == "2"){
@@ -122,6 +149,9 @@ int main()
     }
 
     else if(choice == "4"){
+        loadImage();
+         filter_4();
+
 
 
     }
