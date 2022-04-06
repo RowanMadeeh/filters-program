@@ -8,6 +8,7 @@ using namespace std;
 
 
 unsigned char image[SIZE][SIZE];
+unsigned char image1[SIZE][SIZE];
 
 
 void loadImage () {
@@ -75,14 +76,14 @@ void rotateimage(){
 void filter_1()
 {
 int sum=0,avg;
-for(int i=0;i<size;i++){
-    for(int j=0;j<size;j++){
-        sum++image[i][j];
+for(int i=0;i<SIZE;i++){
+    for(int j=0;j<SIZE;j++){
+        sum+=image[i][j];
     }
 }
-avg=sum/(size*size);
-for(int i=0;i<size;i++){
-    for(int j=0;j<size;j++){
+avg=sum/(SIZE*SIZE);
+for(int i=0;i<SIZE;i++){
+    for(int j=0;j<SIZE;j++){
         if(image[i][j]>avg)
             image[i][j]=255;
         else
@@ -93,6 +94,30 @@ for(int i=0;i<size;i++){
 }
 }
 
+void filter_3(){
+
+   char imageFileName[100];
+
+   // Get gray scale image file name
+   cout << "Enter the other source image file name: ";
+   cin >> imageFileName;
+
+   // Add to it .bmp extension and load image
+   strcat (imageFileName, ".bmp");
+   readGSBMP(imageFileName, image1);
+
+   for (int i = 0; i < SIZE; i++) {
+    for (int j = 0; j < SIZE; j++){
+
+        image[i][j] = (image1[i][j] + image[i][j])/2;
+
+    }
+   }
+
+
+
+}
+
 void filter_4(){
     for(int i=0;i<=255;i++){
         for(int j=0;j<=127;j++){
@@ -100,6 +125,52 @@ void filter_4(){
         }
     }
 }
+
+void filter_6(){
+
+    string choice;
+
+    while(true){
+
+        cout<<"Enter (D) if you want to darken the photo"<<endl;
+        cout<<"Enter (L) if you want to lighten the photo"<<endl;
+        cout<<endl;
+        cout<<"Choose whether you want to darken or lighten the photo: ";
+        cin>>choice;
+
+        if(choice == "L" || choice == "l"){
+
+            for (int i = 0; i <= SIZE; i++) {
+                for (int j = 0; j <= SIZE; j++){
+
+                    if(image[i][j]*2 <= 255){
+                        image[i][j] *= 1.5;
+                    }
+
+                 }
+             }
+            break;
+        }
+
+        else if(choice == "D" || choice == "d"){
+
+            for (int i = 0; i < SIZE; i++) {
+                for (int j = 0; j < SIZE; j++){
+
+                    image[i][j] *= 0.5;
+
+                 }
+             }
+             break;
+        }
+
+        else{
+            cout<<"Invalid input!"<<endl;
+        }
+    }
+}
+
+
 
 
 int main()
@@ -117,8 +188,8 @@ int main()
     cout<<"2- Invert Filter"<<endl;
     cout<<"3- Merge Filter"<<endl;
     cout<<"4- Flip Image"<<endl;
-    cout<<"5- Darken and Lighten Image"<<endl;
-    cout<<"6- Rotate Image"<<endl;
+    cout<<"5- Rotate Image"<<endl;
+    cout<<"6- Darken and Lighten Image"<<endl;
     cout<<"7- Detect Image Edges"<<endl;
     cout<<"8- Enlarge Image"<<endl;
     cout<<"9- Shrink Image"<<endl;
@@ -145,6 +216,8 @@ int main()
     }
 
     else if(choice == "3"){
+        loadImage();
+        filter_3();
 
     }
 
@@ -157,10 +230,6 @@ int main()
     }
 
     else if(choice == "5"){
-
-    }
-
-    else if(choice == "6"){
         loadImage();
         cout<<"please choose:"<<'\n'<<" 1- rotate 90 degrees"<<'\n'<<" 2- rotate 180 degrees"<<'\n'<<" 3- rotate 270 degrees"<<'\n';
         cin>>n;
@@ -177,6 +246,13 @@ int main()
            rotateimage();
 
         }
+
+    }
+
+    else if(choice == "6"){
+        loadImage();
+        filter_6();
+
     }
 
     else if(choice == "0"){
@@ -201,11 +277,6 @@ int main()
 
 
   }
-
-
-
-
-
 
 
 
