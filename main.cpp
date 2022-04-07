@@ -118,13 +118,30 @@ void filter_3(){
 
 }
 
-void filter_4(){
-    for(int i=0;i<=255;i++){
-        for(int j=0;j<=127;j++){
-            swap(image[i][j],image[255-i][255-j]);
+//function for filter 2 to flip either horizontally or verticaly
+void filter_4() {
+    int choose;
+    //the user will choose the type of the flip he wants
+    cout << "choose the type of the flip : " << endl;
+    cout << "1- vertical flip : " << endl;
+    cout << "2- Horizontal flip : " << endl;
+    cin >> choose;
+    //for vertical flip
+    if (choose == 1) {
+        for (int i = 0; i <= 255; i++) {
+            for (int j = 0; j <= 127; j++) {
+                swap(image[i][j], image[127 - i][127 - j]);
+            }
+        }
+        //for horizontal flip
+    } else if (choose == 2) {
+
+        for (int i = 0; i <= 255; i++) {
+            for (int j = 0; j <= 127; j++) {
+                swap(image[i][j], image[i][255 - j]);
+            }
         }
     }
-}
 
 void filter_6(){
 
