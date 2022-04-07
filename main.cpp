@@ -42,13 +42,22 @@ void swap(int& a,int& b){
     b = t;
 }
 
+// a function for inverting image to produce negative of the image
+
 void invertimage() {
+    // a for loop to loop on each pixel in image
   for (int i = 0; i < SIZE; i++) {
     for (int j = 0; j< SIZE; j++) {
+
+              // convert black pixels to white
             if(image[i][j]==0){
                 image[i][j]=255;
+
+             // convert white pixels to black
             }else if(image[i][j]==255){
                 image[i][j]=0;
+
+             // convert gray scale pixels
             }else{
                 image[i][j]=255-image[i][j];
             }
@@ -57,18 +66,23 @@ void invertimage() {
   }
 }
 
+// a function for rotating image by 90 degrees
+
 void rotateimage(){
+     // a for loop to loop on each pixel in the 2D array and transpose the 2D array
      for (int i = 0; i <=SIZE; i++) {
             for (int j = i+1; j <= SIZE; j++) {
 
-                swap(image[i][j],image[j][i]);
+                swap(image[i][j],image[j][i]);   // transpose
 
             }
         }
+
+        // a for loop to loop on each row in the 2D array and reverse it
         for (int i = 0; i <=SIZE; i++) {
             for (int j = 0; j <= SIZE/2; j++) {
 
-                swap(image[i][j],image[i][SIZE-1-j]);
+                swap(image[i][j],image[i][SIZE-1-j]);  // reverse
 
             }
         }
@@ -94,6 +108,8 @@ for(int i=0;i<SIZE;i++){
 }
 }
 
+// a function for merging two images
+
 void filter_3(){
 
    char imageFileName[100];
@@ -105,10 +121,11 @@ void filter_3(){
    // Add to it .bmp extension and load image
    strcat (imageFileName, ".bmp");
    readGSBMP(imageFileName, image1);
-
+   // a nested loop to loop on each pixel in the image
    for (int i = 0; i < SIZE; i++) {
     for (int j = 0; j < SIZE; j++){
 
+        // Assigning the image with the average between the pixel of the two images
         image[i][j] = (image1[i][j] + image[i][j])/2;
 
     }
@@ -126,6 +143,8 @@ void filter_4(){
     }
 }
 
+// a function to lighten or darken an image
+
 void filter_6(){
 
     string choice;
@@ -137,12 +156,15 @@ void filter_6(){
         cout<<endl;
         cout<<"Choose whether you want to darken or lighten the photo: ";
         cin>>choice;
+        // To lighten the image
 
         if(choice == "L" || choice == "l"){
 
+            // a nested loop to loop on each pixel in the image
             for (int i = 0; i <= SIZE; i++) {
                 for (int j = 0; j <= SIZE; j++){
 
+             // Assigning each pixel with value 1.5*pixel
                     if(image[i][j]*2 <= 255){
                         image[i][j] *= 1.5;
                     }
@@ -151,12 +173,14 @@ void filter_6(){
              }
             break;
         }
-
+        // To darken the image
         else if(choice == "D" || choice == "d"){
 
+           // a nested loop to loop on each pixel in the image
             for (int i = 0; i < SIZE; i++) {
                 for (int j = 0; j < SIZE; j++){
 
+            // Assigning each pixel with its half value
                     image[i][j] *= 0.5;
 
                  }
@@ -234,16 +258,16 @@ int main()
         cout<<"please choose:"<<'\n'<<" 1- rotate 90 degrees"<<'\n'<<" 2- rotate 180 degrees"<<'\n'<<" 3- rotate 270 degrees"<<'\n';
         cin>>n;
         if(n==1){
-            rotateimage();
+            rotateimage(); //rotate 90 degrees
         }else if(n==2){
             rotateimage();
-            rotateimage();
+            rotateimage();  //rotate 180 degrees
 
 
         }else if(n==3){
            rotateimage();
            rotateimage();
-           rotateimage();
+           rotateimage();   // rotate 270 degrees
 
         }
 
