@@ -39,6 +39,44 @@ void savenewImage () {
    writeRGBBMP(imageFileName, newimage);
 }
 
+void filter_1() {
+    int sum=0,avg=0;
+    for(int i=0;i<SIZE;i++){
+        for(int j=0;j<SIZE;j++){
+            for (int k = 0; k < RGB; ++k) {
+                sum+=image[i][j][k];
+            }
+
+        }
+    }
+
+
+    for(int i=0;i<SIZE;i++){
+        for(int j=0;j<SIZE;j++){
+            for (int k = 0; k < RGB; k++) {
+                avg+=image[i][j][k];
+            }
+            avg/=3;
+            if (avg>127)
+            {
+                image[i][j][0] = 255;
+                image[i][j][1] = 255;
+                image[i][j][2] = 255;
+            }
+            else
+            {
+                image[i][j][0] = 0;
+                image[i][j][1] = 0;
+                image[i][j][2] = 0;
+            }
+
+        }
+    }
+}
+
+
+
+
 void invertimage() {
 
     // a nested for loop to loop on each pixel in image
@@ -86,6 +124,40 @@ void filter_3(){
 
 
 }
+void filter_4() {
+    int choose;
+    //the user will choose the type of the flip he wants
+    cout << "choose the type of the flip : " << endl;
+    cout << "1- vertical flip : " << endl;
+    cout << "2- Horizontal flip : " << endl;
+    cin >> choose;
+    //for vertical flip
+    if (choose == 1) {
+        for (int i = 0; i <= 255; i++) {
+            for (int j = 0; j <= 127; j++) {
+                for (int k = 0; k < RGB; ++k) {
+                    swap(image[i][j][k], image[255 - i][ 255-j][k]);
+                }
+            }
+        }
+        //for horizontal flip
+    } else if (choose == 2) {
+
+        for (int i = 0; i <= 255; i++) {
+            for (int j = 0; j <= 127; j++) {
+                for (int k = 0; k < RGB; ++k) {
+                    swap(image[i][j][k], image[i][255 - j][k]);
+                }
+
+            }
+        }
+    }
+
+
+}
+
+
+
 void rotateimage(){
 
     // a nested for loop to loop on each pixel in the 3D array and transpose the 3D array
@@ -153,6 +225,108 @@ void filter_6(){
         }
     }
 }
+void detect_edges() {
+
+
+    unsigned char new_image[SIZE][SIZE][RGB];
+// first of all inorder to detect edges of the photo
+// we have to return the photo into black and white only by using filter 1 of changing image into black and white
+    int sum = 0, avg = 0;
+    for (int i = 0; i < SIZE; i++) {
+        for (int j = 0; j < SIZE; j++) {
+            for (int k = 0; k < RGB; ++k) {
+                sum += image[i][j][k];
+            }
+
+        }
+    }
+
+    for (int i = 0; i < SIZE; i++) {
+        for (int j = 0; j < SIZE; j++) {
+            for (int k = 0; k < RGB; k++) {
+                avg += image[i][j][k];
+            }
+            avg /= 3;
+            if (avg > 127) {
+                image[i][j][0] = 255;
+                image[i][j][1] = 255;
+                image[i][j][2] = 255;
+            } else {
+                image[i][j][0] = 0;
+                image[i][j][1] = 0;
+                image[i][j][2] = 0;
+            }
+
+        }
+    }
+// after we turned the image into black and white we have to compare each pixel with the whole surrounded pixels
+// by using already present pixels to compare with this pixel
+    for (int i = 1; i < SIZE; i++) {
+        for (int j = 0; j < SIZE; j++) {
+            for (int k = 0; k < RGB; k++) {
+                new_image[i][j][k] =
+                        (image[i - 1][j - 1][k]) + (image[i + 1][j - 1][k]) + (image[i - 1][j][k]) +
+                        (image[i][j][k] * -8) +
+                        (image[i + 1][j][k]) + (image[i - 1][j + 1][k]) + (image[i][j + 1][k]) +
+                        (image[i + 1][j + 1][k]) +
+                        (image[i][j - 1][k]);
+            }
+        }
+
+    }
+// after we convert the image inti black and white
+// and compare the pixels with it's surrounding pixels we have to invert the image by using filter 2 to invert the image colors
+
+    for (int i = 0; i < SIZE; i++) {
+        for (int j = 0; j< SIZE; j++) {
+            for (int k = 0; k <RGB ; ++k) {
+
+                if(image[i][j][k]==0){
+                    image[i][j][k]=255;
+                }else if(image[i][j][k]==255){
+                    image[i][j][k]=0;
+                }else{
+                    image[i][j][k]=255-image[i][j][k];
+                }
+            }
+
+        }
+    }
+
+    for(int i=0;i<255;i++){
+        for(int j=0;j<255;j++){
+            for(int k=0;k<RGB;k++) {
+                for (int k = 0; k < RGB; ++k) {
+                    image[i][j][k] = new_image[i][j][k];
+                }
+            }
+        }
+    }
+
+    for (int i = 0; i < 255; i++) {
+        for (int j = 0; j < 255; j++) {
+            for (int k = 0; k < RGB; ++k) {
+                if (image[i][j][k] == 0) {
+                    image[i][j][k] = 255;
+                } else if (image[i][j][k] == 255) {
+                    image[i][j][k] = 0;
+                } else {
+                    image[i][j][k] = 255 - image[i][j][k];
+                }
+            }
+
+
+        }
+    }
+
+}
+
+
+
+
+
+
+
 void filter_8(int n){
 
     // enlarging first quarter
@@ -218,6 +392,7 @@ void filter_8(int n){
     }
 
 }
+
 void filter_9(){
     string choice;
     cout<<"Enter 1 if you want to divide the image into half"<<endl;
@@ -280,6 +455,65 @@ void filter_9(){
         }
     }
 }
+
+void mirror_image(){
+    cout<<"choose the filter you want here :\n"
+          "1)left mirror\n"
+          "2)right mirror\n"
+          "3)upper mirror\n"
+          "4)lower mirror \n";
+    int mirror;
+    cin>>mirror;
+    //there are for types for image mirroring
+    //first left mirror
+    if(mirror==1){
+        for(int i=0;i<=255;i++){
+            for(int j=0;j<=127;j++){
+                for (int k = 0; k < RGB; ++k) {
+                    image[i][255-j][k]=image[i][j][k];
+                }
+
+            }
+        }
+    }
+        //second right mirror
+    else if(mirror==2){
+        for(int i=0;i<=255;i++){
+            for(int j=0;j<=127;j++){
+                for (int k = 0; k < RGB; ++k) {
+                    image[i][j][k]=image[i][255-j][k];
+                }
+
+            }
+        }
+    }
+        //third upper mirror
+    else if(mirror==3){
+
+        for(int i=0;i<=127;i++){
+            for(int j=0;j<=255;j++)
+                for (int k = 0; k < RGB; ++k) {
+                    image[255-i][j][k]= image[i][j][k];
+                }
+
+        }
+    }
+
+//forth lower mirror
+    else if(mirror==4){
+
+        for(int i=0;i<=127;i++){
+            for(int j=0;j<=255;j++){
+                for (int k = 0; k < RGB; ++k) {
+                    image[i][j][k]=image[255-i][j][k];
+                }
+
+            }        }
+    }}
+
+
+
+
 void filter_b(int a,int b,int c,int d){
 
     //a nested for loop to insert the the first quarter of the image in the new quarter that the user chose
@@ -486,6 +720,7 @@ int main(){
     if(choice == "1"){
 
         loadImage();
+        filter_1();
 
     }
 
@@ -499,13 +734,9 @@ int main(){
         filter_3();
 
     }
-
-    else if(choice == "c"){
+    else if(choice == "4"){
         loadImage();
-        filter_c();
-
-
-
+        filter_4();
 
     }
 
@@ -533,7 +764,13 @@ int main(){
         loadImage();
         filter_6();
 
-    }else if(choice =="8"){
+    }
+    else if(choice == "7"){
+        loadImage();
+        detect_edges() ;
+
+    }
+    else if(choice =="8"){
         loadImage();
         cout<<"please choose Which quarter to enlarge 1, 2, 3 or 4: "<<'\n';
         cin>>n;
@@ -543,7 +780,13 @@ int main(){
         loadImage();
         filter_9();
 
-    }else if(choice =="b"){
+    }
+  else if(choice == "a"){
+        loadImage();
+        mirror_image();
+
+    }
+    else if(choice =="b"){
         loadImage();
         cout<<"please choose new order of quarters(separated with spaces): "<<'\n';
         cin>>a>>b>>c>>d;
