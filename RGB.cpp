@@ -4,6 +4,7 @@
 using namespace std;
 unsigned char image[SIZE][SIZE][RGB];
 unsigned char newimage[SIZE][SIZE][RGB];
+unsigned char image1[SIZE][SIZE][RGB];
 void loadImage () {
    char imageFileName[100];
 
@@ -62,6 +63,29 @@ void invertimage() {
     }
   }
 }
+void filter_3(){
+
+   char imageFileName[100];
+
+   // Get gray scale image file name
+   cout << "Enter the other source image file name: ";
+   cin >> imageFileName;
+
+   // Add to it .bmp extension and load image
+   strcat (imageFileName, ".bmp");
+   readRGBBMP(imageFileName, image1);
+
+   for (int i = 0; i < SIZE; i++) {
+    for (int j = 0; j < SIZE; j++){
+        for(int k=0; k<RGB; ++k){
+            image[i][j][k] = (image1[i][j][k] + image[i][j][k])/2;
+        }
+    }
+   }
+
+
+
+}
 void rotateimage(){
 
     // a nested for loop to loop on each pixel in the 3D array and transpose the 3D array
@@ -85,6 +109,49 @@ void rotateimage(){
 
             }
         }
+}
+void filter_6(){
+
+    string choice;
+
+    while(true){
+
+        cout<<"Enter (D) if you want to darken the photo"<<endl;
+        cout<<"Enter (L) if you want to lighten the photo"<<endl;
+        cout<<endl;
+        cout<<"Choose whether you want to darken or lighten the photo: ";
+        cin>>choice;
+
+        if(choice == "L" || choice == "l"){
+
+            for (int i = 0; i <= SIZE; i++) {
+                for (int j = 0; j <= SIZE; j++){
+                    for(int k=0; k<RGB; ++k){
+                        if(image[i][j][k]*2 <= 300){
+                        image[i][j][k] *= 1.5;
+                        }
+                    }
+                 }
+             }
+            break;
+        }
+
+        else if(choice == "D" || choice == "d"){
+
+            for (int i = 0; i < SIZE; i++) {
+                for (int j = 0; j < SIZE; j++){
+                    for(int k=0; k<RGB; ++k){
+                         image[i][j][k] *= 0.5;
+                    }
+                 }
+             }
+             break;
+        }
+
+        else{
+            cout<<"Invalid input!"<<endl;
+        }
+    }
 }
 void filter_8(int n){
 
@@ -150,6 +217,68 @@ void filter_8(int n){
 
     }
 
+}
+void filter_9(){
+    string choice;
+    cout<<"Enter 1 if you want to divide the image into half"<<endl;
+    cout<<"Enter 2 if you want to divide the image into one third"<<endl;
+    cout<<"Enter 3 if you want to divide the image into quarter"<<endl;
+    cout<<"Your choice: ";
+    cin>>choice;
+
+    if(choice=="1"){
+
+        for (int i = 0; i < SIZE/2; i++){
+           for (int j = 0; j < SIZE/2; j++){
+                for(int k=0; k<RGB; ++k){
+                    image1[i][j][k]=image[i*2][j*2][k];
+                }
+           }
+        }
+        for (int i = 0; i < SIZE; i++){
+           for (int j = 0; j < SIZE; j++){
+                for(int k=0; k<RGB; ++k){
+                    image[i][j][k]=image1[i][j][k];
+                }
+           }
+        }
+
+    }
+    else if(choice=="2"){
+
+        for (int i = 0; i < SIZE/3; i++){
+           for (int j = 0; j < SIZE/3; j++){
+                for(int k=0; k<RGB; ++k){
+                    image1[i][j][k]=image[i*3][j*3][k];
+                }
+           }
+        }
+        for (int i = 0; i < SIZE; i++){
+           for (int j = 0; j < SIZE; j++){
+                for(int k=0; k<RGB; ++k){
+                    image[i][j][k]=image1[i][j][k];
+                }
+           }
+        }
+    }
+
+    else if(choice=="3"){
+
+        for (int i = 0; i < SIZE/4; i++){
+           for (int j = 0; j < SIZE/4; j++){
+                for(int k=0; k<RGB; ++k){
+                    image1[i][j][k]=image[i*4][j*4][k];
+                }
+           }
+        }
+        for (int i = 0; i < SIZE; i++){
+           for (int j = 0; j < SIZE; j++){
+                for(int k=0; k<RGB; ++k){
+                    image[i][j][k]=image1[i][j][k];
+                }
+           }
+        }
+    }
 }
 void filter_b(int a,int b,int c,int d){
 
@@ -367,7 +496,7 @@ int main(){
 
     else if(choice == "3"){
         loadImage();
-
+        filter_3();
 
     }
 
@@ -402,13 +531,18 @@ int main(){
 
     else if(choice == "6"){
         loadImage();
-
+        filter_6();
 
     }else if(choice =="8"){
         loadImage();
         cout<<"please choose Which quarter to enlarge 1, 2, 3 or 4: "<<'\n';
         cin>>n;
         filter_8(n);
+
+    }else if(choice == "9"){
+        loadImage();
+        filter_9();
+
     }else if(choice =="b"){
         loadImage();
         cout<<"please choose new order of quarters(separated with spaces): "<<'\n';
@@ -423,6 +557,10 @@ int main(){
         }
         filter_b(a,b,c,d);
 
+    }
+    else if(choice == "c"){
+        loadImage();
+        filter_c();
     }
 
     else if(choice == "0"){
