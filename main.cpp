@@ -570,6 +570,7 @@ void filter_b(int a,int b,int c,int d){
     }
 }
 int average = 0;
+// a function to blur an image
 void filter_c(){
 
     for (int i = 1,k=0; i < SIZE; i+=3,k++) {
