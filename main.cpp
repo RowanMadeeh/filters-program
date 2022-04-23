@@ -347,6 +347,56 @@ void filter_8(int n){
     }
 
 }
+void filter_9(){
+    string choice;
+    cout<<"Enter 1 if you want to divide the image into half"<<endl;
+    cout<<"Enter 2 if you want to divide the image into one third"<<endl;
+    cout<<"Enter 3 if you want to divide the image into quarter"<<endl;
+    cout<<"Your choice: ";
+    cin>>choice;
+
+    if(choice=="1"){
+
+        for (int i = 0; i < SIZE/2; i++){
+           for (int j = 0; j < SIZE/2; j++){
+                image1[i][j]=image[i*2][j*2];
+           }
+        }
+        for (int i = 0; i < SIZE; i++){
+           for (int j = 0; j < SIZE; j++){
+                image[i][j]=image1[i][j];
+           }
+        }
+
+    }
+    else if(choice=="2"){
+
+        for (int i = 0; i < SIZE/3; i++){
+           for (int j = 0; j < SIZE/3; j++){
+                image1[i][j]=image[i*3][j*3];
+           }
+        }
+        for (int i = 0; i < SIZE; i++){
+           for (int j = 0; j < SIZE; j++){
+                image[i][j]=image1[i][j];
+           }
+        }
+    }
+
+    else if(choice=="3"){
+
+        for (int i = 0; i < SIZE/4; i++){
+           for (int j = 0; j < SIZE/4; j++){
+                image1[i][j]=image[i*4][j*4];
+           }
+        }
+        for (int i = 0; i < SIZE; i++){
+           for (int j = 0; j < SIZE; j++){
+                image[i][j]=image1[i][j];
+           }
+        }
+    }
+}
 void mirror_image(){
     cout<<"choose the filter you want here :\n"
           "1)left mirror\n"
@@ -519,6 +569,29 @@ void filter_b(int a,int b,int c,int d){
         }
     }
 }
+int average = 0;
+void filter_c(){
+
+    for (int i = 1,k=0; i < SIZE; i+=3,k++) {
+        for (int j = 1,l=0; j < SIZE; j+=3,l++){
+
+            for(int k = i; k < 3 + i; k++){
+                for(int h = j; h < 3 + j; h++){
+                    average += image[k][h];
+
+                }
+            }
+
+            for(int k = i; k < 3 + i; k++){
+                for(int h = j; h < 3 + j; h++){
+                    image[k][h] = average/9;
+
+                }
+            }
+            average = 0;
+        }
+    }
+}
 // a function to check if the input is between 1 and 4
 
 bool check(int a){
@@ -627,6 +700,10 @@ int main()
         filter_8(n);
 
     }
+    else if(choice == "9"){
+        loadImage();
+        filter_9();
+    }
     else if(choice == "a"){
         loadImage();
         mirror_image();
@@ -646,6 +723,10 @@ int main()
         }
         filter_b(a,b,c,d);
 
+    }
+    else if(choice == "c"){
+        loadImage();
+        filter_c();
     }
 
     else if(choice == "0"){
