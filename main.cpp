@@ -214,6 +214,75 @@ void filter_6(){
         }
     }
 }
+void detect_edges() {
+
+    unsigned char new_image[SIZE][SIZE];
+
+    int sum = 0, avg;
+    for (int i = 0; i < SIZE; i++) {
+        for (int j = 0; j < SIZE; j++) {
+            sum += image[i][j];
+        }
+    }
+//here we got the average of the colors in the photo
+    avg = sum / (SIZE * SIZE);
+    for (int i = 0; i < SIZE; i++) {
+        for (int j = 0; j < SIZE; j++) {
+            if (image[i][j]>avg)
+                image[i][j] = 255;
+            else {
+                image[i][j] = 0;
+            }
+        }
+    }
+
+    for (int i = 0; i < SIZE; i++) {
+        for (int j = 0; j < SIZE; j++) {
+            if (image[i][j] > 127)
+                image[i][j] = 255;
+            else
+                image[i][j] = 0;
+        }
+    }
+
+    for (int i = 1; i < SIZE; i++) {
+        for (int j = 0; j < SIZE; j++) {
+            new_image[i][j] = (image[i - 1][j - 1]) + (image[i + 1][j - 1]) + (image[i - 1][j]) + (image[i][j] * -8) +
+                              (image[i + 1][j]) + (image[i - 1][j + 1]) + (image[i][j + 1]) + (image[i + 1][j + 1]) +
+                              (image[i][j - 1]);
+
+        }}
+    for (auto &i: new_image) {
+        for (unsigned char &j: i) {
+            j = 255 - j;
+        }
+
+    }
+
+    for(int i=0;i<255;i++){
+        for(int j=0;j<255;j++){
+            image[i][j]=new_image[i][j];
+        }
+    }
+
+
+
+//invert
+    for (int i = 0; i < SIZE; i++) {
+        for (int j = 0; j < SIZE; j++) {
+            if (image[i][j] == 0) {
+                image[i][j] = 255;
+            } else if (image[i][j] == 255) {
+                image[i][j] = 0;
+            } else {
+                image[i][j] = 255 - image[i][j];
+            }
+
+
+        }
+    }
+
+}
 
 // a function for enlarging a certain quarter of an image
 void filter_8(int n){
@@ -278,6 +347,63 @@ void filter_8(int n){
     }
 
 }
+void mirror_image(){
+    cout<<"choose the filter you want here :\n"
+          "1)left mirror\n"
+          "2)right mirror\n"
+          "3)upper mirror\n"
+          "4)lower mirror \n";
+    int mirror;
+    cin>>mirror;
+    //there are for types for image mirroring
+    //first left mirror
+    if(mirror==1){
+        for(int i=0;i<=255;i++){
+            for(int j=0;j<=127;j++){
+
+                image[i][255-j]=image[i][j];
+
+
+            }
+        }
+    }
+        //second right mirror
+    else if(mirror==2){
+        for(int i=0;i<=255;i++){
+            for(int j=0;j<=127;j++){
+
+                image[i][j]=image[i][255-j];
+
+
+            }
+        }
+    }
+        //third upper mirror
+    else if(mirror==3){
+
+        for(int i=0;i<=127;i++){
+            for(int j=0;j<=255;j++)
+
+                image[255-i][j]= image[i][j];
+
+
+        }
+    }
+
+//forth lower mirror
+    else if(mirror==4){
+
+        for(int i=0;i<=127;i++){
+            for(int j=0;j<=255;j++){
+
+                image[i][j]=image[255-i][j];
+
+            }
+        }
+    }
+
+}
+
 // a function for shuffling the four quarters of an image
 void filter_b(int a,int b,int c,int d){
 
@@ -489,11 +615,21 @@ int main()
         filter_6();
 
     }
+    else if(choice == "7"){
+        loadImage();
+        detect_edges();
+
+    }
     else if(choice == "8"){
         loadImage();
         cout<<"please choose Which quarter to enlarge 1, 2, 3 or 4: "<<'\n';
         cin>>n;
         filter_8(n);
+
+    }
+    else if(choice == "a"){
+        loadImage();
+        mirror_image();
 
     }
     else if(choice == "b"){
