@@ -9,6 +9,7 @@ using namespace std;
 
 unsigned char image[SIZE][SIZE];
 unsigned char image1[SIZE][SIZE];
+unsigned char newimage[SIZE][SIZE];
 
 
 void loadImage () {
@@ -72,8 +73,8 @@ void rotateimage(){
      // a for loop to loop on each pixel in the 2D array and transpose the 2D array
      for (int i = 0; i <=SIZE; i++) {
             for (int j = i+1; j <= SIZE; j++) {
-
-                swap(image[i][j],image[j][i]);   // transpose
+                // transpose
+                swap(image[i][j],image[j][i]);
 
             }
         }
@@ -81,15 +82,18 @@ void rotateimage(){
         // a for loop to loop on each row in the 2D array and reverse it
         for (int i = 0; i <=SIZE; i++) {
             for (int j = 0; j <= SIZE/2; j++) {
-
-                swap(image[i][j],image[i][SIZE-1-j]);  // reverse
+                // reverse
+                swap(image[i][j],image[i][SIZE-1-j]);
 
             }
         }
 }
+// a function for converting white pixels to black pixels and vice versa
+
 void filter_1()
 {
 int sum=0,avg;
+// a for loop for getting average of pixels
 for(int i=0;i<SIZE;i++){
     for(int j=0;j<SIZE;j++){
         sum+=image[i][j];
@@ -161,7 +165,7 @@ void filter_4() {
     }
 
 // a function to lighten or darken an image
-
+}
 void filter_6(){
 
     string choice;
@@ -211,6 +215,193 @@ void filter_6(){
     }
 }
 
+// a function for enlarging a certain quarter of an image
+void filter_8(int n){
+
+    // enlarging first quarter
+    if(n==1){
+
+        // a nested for loop to copy the value of each pixel and store it in 4 pixels in a new image
+        for (int i = 0,k=0; i <=SIZE/2,k<SIZE; i++,k+=2) {
+            for (int j = 0,l=0; j <= SIZE/2,l<SIZE; j++,l+=2) {
+                 newimage[k][l]=image[i][j];
+                 newimage[k+1][l]=image[i][j];
+                 newimage[k][l+1]=image[i][j];
+                 newimage[k+1][l+1]=image[i][j];
+            }
+        }
+
+     // enlarging second quarter
+    }else if(n==2){
+
+        // a nested for loop to copy the value of each pixel and store it in 4 pixels in a new image
+        for (int i = 0,k=0; i <=SIZE/2,k<SIZE; i++,k+=2) {
+            for (int j = SIZE/2,l=0; j <= SIZE,l<SIZE; j++,l+=2) {
+                 newimage[k][l]=image[i][j];
+                 newimage[k+1][l]=image[i][j];
+                 newimage[k][l+1]=image[i][j];
+                 newimage[k+1][l+1]=image[i][j];
+            }
+        }
+
+    //enlarging third quarter
+    }else if(n==3){
+
+        // a nested for loop to copy the value of each pixel and store it in 4 pixels in a new image
+        for (int i = SIZE/2,k=0; i <=SIZE,k<SIZE; i++,k+=2) {
+            for (int j = 0,l=0; j <= SIZE/2,l<SIZE; j++,l+=2) {
+                 newimage[k][l]=image[i][j];
+                 newimage[k+1][l]=image[i][j];
+                 newimage[k][l+1]=image[i][j];
+                 newimage[k+1][l+1]=image[i][j];
+            }
+        }
+
+    // enlarging fourth quarter
+    }else if(n==4){
+
+        // a nested for loop to copy the value of each pixel and store it in 4 pixels in a new image
+        for (int i = SIZE/2,k=0; i <=SIZE,k<SIZE; i++,k+=2) {
+            for (int j = SIZE/2,l=0; j <= SIZE,l<SIZE; j++,l+=2) {
+                 newimage[k][l]=image[i][j];
+                 newimage[k+1][l]=image[i][j];
+                 newimage[k][l+1]=image[i][j];
+                 newimage[k+1][l+1]=image[i][j];
+            }
+        }
+
+    }
+    for(int i=0;i<SIZE;i++){
+        for(int j=0;j<SIZE;j++){
+            image[i][j]=newimage[i][j];
+        }
+    }
+
+}
+// a function for shuffling the four quarters of an image
+void filter_b(int a,int b,int c,int d){
+
+    //a nested for loop to insert the the first quarter of the image in the new quarter that the user chose
+    if(a==1){
+      for (int i = 0,k=0; i <=SIZE/2,k<SIZE/2; i++,k++) {
+            for (int j = 0,l=0; j <= SIZE/2,l<SIZE/2; j++,l++) {
+                 newimage[k][l]=image[i][j];
+            }
+        }
+
+    }else if(a==2){
+        for (int i = 0,k=0; i <=SIZE/2,k<SIZE/2; i++,k++) {
+            for (int j = SIZE/2,l=0; j <= SIZE,l<SIZE/2; j++,l++) {
+                 newimage[k][l]=image[i][j];
+            }
+        }
+    }else if(a==3){
+        for (int i = SIZE/2,k=0; i <=SIZE,k<SIZE/2; i++,k++) {
+            for (int j = 0,l=0; j <= SIZE/2,l<SIZE/2; j++,l++) {
+                 newimage[k][l]=image[i][j];
+            }
+        }
+    }else if(a==4){
+        for (int i = SIZE/2,k=0; i <=SIZE,k<SIZE/2; i++,k++) {
+            for (int j = SIZE/2,l=0; j <= SIZE,l<SIZE/2; j++,l++) {
+                 newimage[k][l]=image[i][j];
+            }
+        }
+    }
+
+    //a nested for loop to insert the the second quarter of the image in the new quarter that the user chose
+    if(b==1){
+       for (int i = 0,k=0; i <=SIZE/2,k<SIZE/2; i++,k++) {
+            for (int j = 0,l=SIZE/2; j <= SIZE,l<SIZE; j++,l++) {
+                 newimage[k][l]=image[i][j];
+            }
+        }
+    }else if(b==2){
+        for (int i = 0,k=0; i <=SIZE/2,k<SIZE/2; i++,k++) {
+            for (int j = SIZE/2,l=SIZE/2; j <= SIZE,l<SIZE; j++,l++) {
+                 newimage[k][l]=image[i][j];
+            }
+        }
+    }else if(b==3){
+        for (int i = SIZE/2,k=0; i <=SIZE,k<SIZE/2; i++,k++) {
+            for (int j = 0,l=SIZE/2; j <= SIZE/2,l<SIZE; j++,l++) {
+                 newimage[k][l]=image[i][j];
+            }
+        }
+    }else if(b==4){
+        for (int i = SIZE/2,k=0; i <=SIZE,k<SIZE/2; i++,k++) {
+            for (int j = SIZE/2,l=SIZE/2; j <= SIZE,l<SIZE; j++,l++) {
+                 newimage[k][l]=image[i][j];
+            }
+        }
+    }
+    //a nested for loop to insert the the third quarter of the image in the new quarter that the user chose
+    if(c==1){
+        for (int i = 0,k=SIZE/2; i <=SIZE/2,k<SIZE; i++,k++) {
+            for (int j = 0,l=0; j <= SIZE/2,l<SIZE/2; j++,l++) {
+                 newimage[k][l]=image[i][j];
+            }
+        }
+    }else if(c==2){
+        for (int i = 0,k=SIZE/2; i <=SIZE/2,k<SIZE; i++,k++) {
+            for (int j = SIZE/2,l=0; j <= SIZE,l<SIZE/2; j++,l++) {
+                 newimage[k][l]=image[i][j];
+            }
+        }
+    }else if(c==3){
+        for (int i = SIZE/2,k=SIZE/2; i <=SIZE,k<SIZE; i++,k++) {
+            for (int j = 0,l=0; j <= SIZE/2,l<SIZE/2; j++,l++) {
+                 newimage[k][l]=image[i][j];
+            }
+        }
+    }else if(c==4){
+        for (int i = SIZE/2,k=SIZE/2; i <=SIZE,k<SIZE; i++,k++) {
+            for (int j = SIZE/2,l=0; j <= SIZE,l<SIZE/2; j++,l++) {
+                 newimage[k][l]=image[i][j];
+            }
+        }
+    }
+    //a nested for loop to insert the the fourth quarter of the image in the new quarter that the user chose
+    if(d==1){
+        for (int k = SIZE/2,i=0; i <=SIZE/2,k<SIZE; i++,k++) {
+            for (int l = SIZE/2,j=0; j <= SIZE/2,l<SIZE; j++,l++) {
+                 newimage[k][l]=image[i][j];
+            }
+        }
+    }else if(d==2){
+        for (int k = SIZE/2,i=0; i <=SIZE/2,k<SIZE; i++,k++) {
+            for (int l = SIZE/2,j=SIZE/2; j <= SIZE,l<SIZE; j++,l++) {
+                 newimage[k][l]=image[i][j];
+            }
+        }
+    }else if(d==3){
+        for (int k = SIZE/2,i=SIZE/2; i <=SIZE,k<SIZE; i++,k++) {
+            for (int l = SIZE/2,j=0; j <= SIZE/2,l<SIZE; j++,l++) {
+                 newimage[k][l]=image[i][j];
+            }
+        }
+    }else if(d==4){
+        for (int k = SIZE/2,i=SIZE/2; i <=SIZE,k<SIZE; i++,k++) {
+            for (int l = SIZE/2,j=SIZE/2; j <= SIZE,l<SIZE; j++,l++) {
+                 newimage[k][l]=image[i][j];
+            }
+        }
+    }
+    for(int i=0;i<SIZE;i++){
+        for(int j=0;j<SIZE;j++){
+            image[i][j]=newimage[i][j];
+        }
+    }
+}
+// a function to check if the input is between 1 and 4
+
+bool check(int a){
+    if(a<0 || a>4){
+        return false;
+    }else{
+        return true;
+    }
+}
 
 
 
@@ -220,7 +411,7 @@ int main()
   cout<<"Hello user!"<<endl;
 
   string choice;
-  int n;
+  int n,a,b,c,d;
 
   while(true){
 
@@ -275,16 +466,19 @@ int main()
         cout<<"please choose:"<<'\n'<<" 1- rotate 90 degrees"<<'\n'<<" 2- rotate 180 degrees"<<'\n'<<" 3- rotate 270 degrees"<<'\n';
         cin>>n;
         if(n==1){
-            rotateimage(); //rotate 90 degrees
-        }else if(n==2){
+            //rotate 90 degrees
             rotateimage();
-            rotateimage();  //rotate 180 degrees
+        }else if(n==2){
+            //rotate 180 degrees
+            rotateimage();
+            rotateimage();
 
 
         }else if(n==3){
+            // rotate 270 degrees
            rotateimage();
            rotateimage();
-           rotateimage();   // rotate 270 degrees
+           rotateimage();
 
         }
 
@@ -293,6 +487,28 @@ int main()
     else if(choice == "6"){
         loadImage();
         filter_6();
+
+    }
+    else if(choice == "8"){
+        loadImage();
+        cout<<"please choose Which quarter to enlarge 1, 2, 3 or 4: "<<'\n';
+        cin>>n;
+        filter_8(n);
+
+    }
+    else if(choice == "b"){
+        loadImage();
+        cout<<"please choose new order of quarters(separated with spaces): "<<'\n';
+        cin>>a>>b>>c>>d;
+        while(true){
+            if(check(a) && check(b) && check(c) && check(d)){
+                break;
+            }else{
+                cout<<"invalid input, please choose new order of quarters(separated with spaces): "<<'\n';
+                cin>>a>>b>>c>>d;
+            }
+        }
+        filter_b(a,b,c,d);
 
     }
 
